@@ -11,7 +11,12 @@
 @interface ZFFileSystem : NSObject
 
 + (NSString *)documentDirectory;
++ (NSString *)LibraryDirectory;
+
 + (BOOL)writeData:(NSData *)data toDocsWithFileName:(NSString *)fileName;
 + (NSData *)readDataFromDocsWithFileName:(NSString *)fileName checkBundleFirst:(BOOL)chekcBundle;
+
++ (BOOL)writeData:(NSData *)data toDocsWithFileName:(NSString *)fileName forDirectoryType:(NSSearchPathDirectory)directory;
++ (NSData *)readDataFromDocsWithFileName:(NSString *)fileName checkBundleFirst:(BOOL)chekcBundle forDirectoryType:(NSSearchPathDirectory)directory;
 
 @end

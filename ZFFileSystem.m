@@ -10,13 +10,32 @@
 
 @implementation ZFFileSystem
 
-+ (NSString *)documentDirectory {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+#pragma mark get directory path
+
++ (NSString *)pathForSearchPath:(NSSearchPathDirectory)directory {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(directory, NSUserDomainMask, YES);
     return [paths objectAtIndex:0];
 }
 
++ (NSString *)documentDirectory {
+    return [ZFFileSystem pathForSearchPath:NSDocumentDirectory];
+}
+
++ (NSString *)LibraryDirectory {
+    return [ZFFileSystem pathForSearchPath:NSLibraryDirectory];
+}
+
+
+#pragma mark write data
+
 + (BOOL)writeData:(NSData *)data toDocsWithFileName:(NSString *)fileName {
-    NSString *filePath = [[ZFFileSystem documentDirectory] stringByAppendingPathComponent:fileName];
+    return [ZFFileSystem writeData:data toDocsWithFileName:fileName forDirectoryType:NSDocumentDirectory];
+}
+
+
+
++ (BOOL)writeData:(NSData *)data toDocsWithFileName:(NSString *)fileName forDirectoryType:(NSSearchPathDirectory)directory {
+    NSString *filePath = [[ZFFileSystem pathForSearchPath:directory] stringByAppendingPathComponent:fileName];
     NSURL *url = [NSURL URLWithString:filePath];
     BOOL success;
     if (!url) {
@@ -25,10 +44,17 @@
     else {
         success = [data writeToFile:filePath atomically:YES];
     }
-    return success;
+    return success;    
 }
 
+
+#pragma mark read data
+
 + (NSData *)readDataFromDocsWithFileName:(NSString *)fileName checkBundleFirst:(BOOL)chekcBundle {
+    return [ZFFileSystem readDataFromDocsWithFileName:fileName checkBundleFirst:chekcBundle forDirectoryType:NSDocumentDirectory];
+}
+
++ (NSData *)readDataFromDocsWithFileName:(NSString *)fileName checkBundleFirst:(BOOL)chekcBundle forDirectoryType:(NSSearchPathDirectory)directory {
     NSString *filePath;
     if (chekcBundle) {
         NSString *ext = [fileName pathExtension];
@@ -36,8 +62,10 @@
         filePath = [[NSBundle mainBundle] pathForResource:name ofType:ext];
         
     }
-    if (!filePath) filePath = [[ZFFileSystem documentDirectory] stringByAppendingPathComponent:fileName];
-    return [NSData dataWithContentsOfFile:filePath];
+    if (!filePath) {
+        filePath = [[ZFFileSystem pathForSearchPath:directory] stringByAppendingPathComponent:fileName];
+    }
+    return [NSData dataWithContentsOfFile:filePath];   
 }
 
 

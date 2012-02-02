@@ -13,6 +13,8 @@
 + (NSString *)documentDirectory;
 + (NSString *)LibraryDirectory;
 
++ (BOOL)createSubdirectoriesToPath:(NSString *)path;
+
 + (BOOL)writeData:(NSData *)data toDocsWithFileName:(NSString *)fileName;
 + (NSData *)readDataFromDocsWithFileName:(NSString *)fileName checkBundleFirst:(BOOL)chekcBundle;
 

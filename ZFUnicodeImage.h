@@ -11,6 +11,7 @@
 #define ZFUnicodeImageTypeApple @"\uF8FF"
 #define ZFUnicodeImageTypeUndo @"\u21A9"
 #define ZFUnicodeImageTypeRedo @"\u21AA"
+#define ZFUnicodeImageTypeBookMark @"U5101"
 
 
 @interface ZFUnicodeImage : UIImage

@@ -27,6 +27,8 @@
         // Initialization code
         self.backgroundView = [self.subviews objectAtIndex:0];
         self.textField = [self.subviews objectAtIndex:1];
+        
+        [self.textField setReturnKeyType:UIReturnKeyDone];
               
     }
     return self;
@@ -47,7 +49,15 @@
     }    
 }
 
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    [self setShowsCancelButton:NO animated:YES];
+}
 
 
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSString *finalString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    [self setShowsCancelButton:(finalString.length == 0) animated:YES];
+    return YES;
+}
 
 @end

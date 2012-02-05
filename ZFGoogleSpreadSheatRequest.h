@@ -3,7 +3,7 @@
 //  AsiaEtrading
 //
 //  Created by cescofry on 27/08/2011.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Ziofritz.com. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -21,7 +21,7 @@
 
 - (NSArray *)arrayFromDocumentKey:(NSString *)key;
 - (NSArray *)arrayFromFilePath:(NSString *)filePath;
-- (void)saveArray:(NSArray *)csvArray toPath:(NSString *)path;
+
 
 
 @end

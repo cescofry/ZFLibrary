@@ -3,7 +3,7 @@
 //  RCLighting
 //
 //  Created by Francesco on 31/01/2012.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 Ziofritz.com. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

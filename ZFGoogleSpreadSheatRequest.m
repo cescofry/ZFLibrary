@@ -3,7 +3,7 @@
 //  AsiaEtrading
 //
 //  Created by cescofry on 27/08/2011.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Ziofritz.com. All rights reserved.
 //
 
 #import "ZFGoogleSpreadSheatRequest.h"
@@ -81,6 +81,7 @@
     
     return (self.containKeys)? [self convertResult:result] : result;
 }
+
 
 
 @end

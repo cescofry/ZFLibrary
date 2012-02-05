@@ -3,7 +3,7 @@
 //  iTarantula
 //
 //  Created by cescofry on 29/01/2012.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 Ziofritz.com. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

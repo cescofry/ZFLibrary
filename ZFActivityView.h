@@ -10,4 +10,9 @@
 
 @interface ZFActivityView : UIView
 
+- (id)initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyle)style;
+
+- (void)show;
+- (void)hide;
+
 @end

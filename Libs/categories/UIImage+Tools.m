@@ -7,8 +7,6 @@
 //
 
 #import "UIImage+Tools.h"
-#import "FTSystem.h"
-#import "UIColor+Tools.h"
 
 
 static inline CGSize swapWidthAndHeight(CGSize size) {
@@ -35,7 +33,8 @@ static inline CGFloat toRadians (CGFloat degrees) { return degrees * M_PI/180.0f
 @implementation UIImage (Tools)
 
 + (UIImage *)alphaPatternImageWithSguareSide:(CGFloat)side withColor1:(UIColor *)color1 andColor2:(UIColor *)color2 {
-	if ([FTSystem isRetina]) side = (side * 2);
+    BOOL isRetina =  ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] == YES && [[UIScreen mainScreen] scale] == 2.00);
+	if (isRetina) side = (side * 2);
 	CGFloat screenScale = [UIScreen mainScreen].scale;
 	CGFloat ds = (side * 2);
 	UIGraphicsBeginImageContextWithOptions(CGSizeMake(ds, ds), 1, screenScale);
@@ -262,28 +261,29 @@ static inline CGFloat toRadians (CGFloat degrees) { return degrees * M_PI/180.0f
  */
 + (int *)newNumOfPixelsInEachLineForWidth:(NSInteger) w andAngle:(NSInteger) ang {
 	int *cntTable = (int *)malloc(sizeof(int)*(ang+1));
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];                     //cause we use many NSNumber objects here - "[NSNumber numberWithInt:]"
+	@autoreleasepool {
+        NSInteger dLong = w; 
+        NSInteger dShort = ang; 
+        
+        NSInteger err = 3*dShort - 2*dLong; 
+        NSInteger cLong = 0; 
+        NSInteger cShort = 0; 
+        cntTable[cShort] = 1;
+        
+        while (cLong < dLong) { 
+            if (err >= 0) { 
+                err -= 2*(dLong - dShort); 
+                ++cShort;
+                cntTable[cShort] = 0;
+            } else {
+                err += 2*dShort;                        
+            }
+            ++cLong;
+            ++cntTable[cShort];
+        }
+    }                    //cause we use many NSNumber objects here - "[NSNumber numberWithInt:]"
 	
-	NSInteger dLong = w; 
-	NSInteger dShort = ang; 
-	
-	NSInteger err = 3*dShort - 2*dLong; 
-	NSInteger cLong = 0; 
-	NSInteger cShort = 0; 
-	cntTable[cShort] = 1;
-	
-	while (cLong < dLong) { 
-		if (err >= 0) { 
-			err -= 2*(dLong - dShort); 
-			++cShort;
-			cntTable[cShort] = 0;
-		} else {
-			err += 2*dShort;                        
-		}
-		++cLong;
-		++cntTable[cShort];
-	}
-	[pool release];
+
 	return cntTable;
 }
 
@@ -321,32 +321,34 @@ static inline CGFloat toRadians (CGFloat degrees) { return degrees * M_PI/180.0f
 //function counts black pixels for given angle MODULE(it checks for -ang and +ang) and returned value(its module: abs(...)) gives u the number of blacks that have been found(maximum)
 //if returned value is positive than, maximum blacks number returned are counted for positive angle otherwise for negative
 + (NSInteger)getBlackPercentageForAngle:(NSInteger) ang forImageData:(UIImage *)image andBlackTreshold:(unsigned char) blackTreshold {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	NSInteger iwidth = CGImageGetWidth(image.CGImage);
-	NSInteger iheight = CGImageGetHeight(image.CGImage);
-	NSInteger blackPixels = 0;
-	NSInteger blackPixelsForNegative = 0;
-	NSInteger numberOfLineChecked = 0;
-	
-	//get array with number of pixels in each line that should be taken to account - Bresenham's algorithm
-	int *bresArray = [UIImage newNumOfPixelsInEachLineForWidth:iwidth andAngle:ang];
-	temporaryImageAngle = ang;
-	NSInteger lineStep = 40;
-	
-	for(NSInteger i = 0; i < iheight - ang; i += lineStep){
-		NSInteger blacksInSkeyLine = [UIImage getBlackPixelsInLine:i forImage:image withBresArray:bresArray andTreshold:blackTreshold negativeAngle:NO];
-		blackPixels += pow(blacksInSkeyLine, 2);
-		blacksInSkeyLine = [UIImage getBlackPixelsInLine:i forImage:image withBresArray:bresArray andTreshold:blackTreshold negativeAngle:YES];
-		blackPixelsForNegative += pow(blacksInSkeyLine, 2);
-		++numberOfLineChecked;
-	}
-	free(bresArray);
-	NSAssert(numberOfLineChecked, @"Division by zero is not allowed!");
-	NSInteger maximumPixels = MAX(blackPixels, blackPixelsForNegative);
-	if(blackPixelsForNegative > blackPixels){
-		maximumPixels = -maximumPixels;
-	}
-	[pool release];
+    NSInteger iwidth = CGImageGetWidth(image.CGImage);
+    NSInteger iheight = CGImageGetHeight(image.CGImage);
+    NSInteger blackPixels = 0;
+    NSInteger blackPixelsForNegative = 0;
+    NSInteger numberOfLineChecked = 0;
+    NSInteger maximumPixels;
+    @autoreleasepool {
+    
+        //get array with number of pixels in each line that should be taken to account - Bresenham's algorithm
+        int *bresArray = [UIImage newNumOfPixelsInEachLineForWidth:iwidth andAngle:ang];
+        temporaryImageAngle = ang;
+        NSInteger lineStep = 40;
+        
+        for(NSInteger i = 0; i < iheight - ang; i += lineStep){
+            NSInteger blacksInSkeyLine = [UIImage getBlackPixelsInLine:i forImage:image withBresArray:bresArray andTreshold:blackTreshold negativeAngle:NO];
+            blackPixels += pow(blacksInSkeyLine, 2);
+            blacksInSkeyLine = [UIImage getBlackPixelsInLine:i forImage:image withBresArray:bresArray andTreshold:blackTreshold negativeAngle:YES];
+            blackPixelsForNegative += pow(blacksInSkeyLine, 2);
+            ++numberOfLineChecked;
+        }
+        free(bresArray);
+        NSAssert(numberOfLineChecked, @"Division by zero is not allowed!");
+        maximumPixels = MAX(blackPixels, blackPixelsForNegative);
+        if(blackPixelsForNegative > blackPixels){
+            maximumPixels = -maximumPixels;
+        }
+    }
+
 	return (maximumPixels / numberOfLineChecked);
 }
 

@@ -20,7 +20,7 @@
 @end
 
 @protocol ZFDatePickerDelegate <NSObject>
-
+@optional
 - (void)datePickerWillAppear:(ZFDatePicker *)picker;
 - (void)datePickerWillDisappear:(ZFDatePicker *)picker;
 

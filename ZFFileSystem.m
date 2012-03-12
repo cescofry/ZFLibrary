@@ -3,7 +3,7 @@
 //  RCLighting
 //
 //  Created by Francesco on 31/01/2012.
-//  Copyright (c) 2012 Ziofritz.com. All rights reserved.
+//  Copyright (c) 2012 Fuerte International. All rights reserved.
 //
 
 #import "ZFFileSystem.h"
@@ -21,17 +21,10 @@
     return [ZFFileSystem pathForSearchPath:NSDocumentDirectory];
 }
 
-+ (NSString *)LibraryDirectory {
++ (NSString *)libraryDirectory {
     return [ZFFileSystem pathForSearchPath:NSLibraryDirectory];
 }
 
-+ (BOOL)createSubdirectoriesToPath:(NSString *)path {
-    NSDictionary *attr = nil;
-    NSError *error = nil;
-    BOOL result = [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:attr error:&error];
-    if (error) NSLog(@"ERROR: %@", error.localizedDescription);
-    return result;
-}
 
 #pragma mark write data
 
@@ -43,15 +36,10 @@
 
 + (BOOL)writeData:(NSData *)data toDocsWithFileName:(NSString *)fileName forDirectoryType:(NSSearchPathDirectory)directory {
     NSString *filePath = [[ZFFileSystem pathForSearchPath:directory] stringByAppendingPathComponent:fileName];
-    NSURL *url = [NSURL URLWithString:filePath];
-    BOOL success;
-    if (!url) {
-        [self createSubdirectoriesToPath:fileName];
-        success = [[NSFileManager defaultManager] createFileAtPath:filePath contents:data attributes:nil];
-    }
-    else {
-        success = [data writeToFile:filePath atomically:YES];
-    }
+    NSDictionary *attr = nil;
+    NSError *error = nil;
+    BOOL success = [[NSFileManager defaultManager] createDirectoryAtPath:[filePath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:attr error:&error];
+    success = [[NSFileManager defaultManager] createFileAtPath:filePath contents:data attributes:attr];
     return success;    
 }
 
@@ -63,18 +51,25 @@
 }
 
 + (NSData *)readDataFromDocsWithFileName:(NSString *)fileName checkBundleFirst:(BOOL)chekcBundle forDirectoryType:(NSSearchPathDirectory)directory {
-    NSString *filePath;
+    NSString *filePath = [self pathForFileName:fileName checkBundleFirst:chekcBundle forDirectoryType:directory];
+    return [NSData dataWithContentsOfFile:filePath];   
+}
+
+#pragma mark paths
+
++ (NSString *)pathForFileName:(NSString *)fileName checkBundleFirst:(BOOL)chekcBundle forDirectoryType:(NSSearchPathDirectory)directory {
+    NSString *filePath = [[NSString alloc] init];
     if (chekcBundle) {
         NSString *onlyFile = [fileName lastPathComponent];
         NSString *ext = [onlyFile pathExtension];
-        NSString *name = [onlyFile stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@".%@", onlyFile] withString:@""];
+        NSString *name = [onlyFile stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@".%@", ext] withString:@""];
         filePath = [[NSBundle mainBundle] pathForResource:name ofType:ext];
         
     }
     if (!filePath) {
-        filePath = [[ZFFileSystem pathForSearchPath:directory] stringByAppendingPathComponent:fileName];
+        filePath = [NSString stringWithString:[[ZFFileSystem pathForSearchPath:directory] stringByAppendingPathComponent:fileName]];
     }
-    return [NSData dataWithContentsOfFile:filePath];   
+    return filePath;  
 }
 
 

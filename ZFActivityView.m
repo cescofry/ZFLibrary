@@ -42,6 +42,10 @@ static UIActivityIndicatorView *_activityIndicator;
         
         [self setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7]];
         [self setAlpha:0];
+        
+        [_activityIndicator bringToFront];
+        [_activityIndicator startAnimating];
+        
     }
     return self;
 }
@@ -51,7 +55,7 @@ static UIActivityIndicatorView *_activityIndicator;
     [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
         [self setAlpha:1];
     } completion:^(BOOL finished) {
-        [_activityIndicator startAnimating];
+        //[_activityIndicator startAnimating];
     }];
 
 }
@@ -62,7 +66,7 @@ static UIActivityIndicatorView *_activityIndicator;
     [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
         [self setAlpha:0];
     } completion:^(BOOL finished) {
-        [_activityIndicator stopAnimating];
+        //[_activityIndicator stopAnimating];
     }];
 }
 

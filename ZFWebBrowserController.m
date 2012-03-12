@@ -58,9 +58,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    CGRect frame = self.view.bounds;
-    frame.size.height -= 140;
-    _webView = [[UIWebView alloc] initWithFrame:frame];
+    
+    _webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
     [self.webView setDelegate:self];
     [self.view addSubview:self.webView];
     [self.webView setBackgroundColor:[UIColor darkGrayColor]];

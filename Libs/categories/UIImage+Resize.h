@@ -11,5 +11,7 @@
 @interface UIImage (Resize)
 
 - (UIImage*)scaleWithMaxSize:(CGSize)maxSize quality:(CGInterpolationQuality)quality;
+- (UIImage *)imageFromImagePickerAtRect:(CGRect)rect;
+- (UIImage *)imageAtRect:(CGRect)rect;
 
 @end

@@ -23,7 +23,7 @@
 #pragma mark init
 
 + (id)buttonWithType:(UIButtonType)buttonType {
-    UIButton *btn = [self buttonWithType:buttonType];
+    UIButton *btn = [super buttonWithType:buttonType];
     return btn;
 }
 

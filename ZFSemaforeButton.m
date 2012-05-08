@@ -23,8 +23,8 @@
 #pragma mark init
 
 + (id)buttonWithType:(UIButtonType)buttonType {
-    self = [super buttonWithType:buttonType];
-    return self;
+    UIButton *btn = [self buttonWithType:buttonType];
+    return btn;
 }
 
 + (ZFSemaforeButton *)buttonWithFrame:(CGRect)frame withTitle:(NSString *)title ofType:(ZFSemaforeButtonType)type {

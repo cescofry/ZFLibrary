@@ -5,18 +5,25 @@ Pod::Spec.new do |s|
   s.version      = "0.0.1"
   s.summary      = "Common Library Components and Categories"
 
-  s.homepage     = "www.ziofritz.com"
+  s.homepage     = "http://www.ziofritz.com"
 
   s.license      = "MIT (example)"
 
-  s.author             = { "Francesco" => "cescofry@gmail.com" }
+  s.author       = { "Francesco" => "cescofry@gmail.com" }
   s.source       = { :git => "https://github.com/cescofry/ZFLibrary.git", :tag => 0.1 }
 
-  s.source_files  = "Categories", "Categories/*.{h,m}", "CoreData", "CoreData/*.{h,m}"
-
-  s.framework  = "CoreData"
 
   s.requires_arc = true
+  
+  s.subspec 'Categories' do |sub|
+    sub.platform = 'ios'
+    sub.source_files = 'Categories/*.{h,m}'
+  end
+  
+  s.subspec 'CoreData' do |sub|
+    sub.source_files = 'CoreData/*.{h,m}'
+    sub.framework = 'CoreData'
+  end
 
 	### Keep for reference
 

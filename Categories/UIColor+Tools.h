@@ -25,13 +25,6 @@
 + (UIColor *)colorWithHexString:(NSString *)stringToConvert;
 - (NSString *)hexString;
 
-
-+ (UIColor *)alphaPatternImageColorWithSguareSide:(CGFloat)side withColor1:(UIColor *)color1 andColor2:(UIColor *)color2;
-
-+ (UIColor *)alphaPatternImageColorWithSguareSide:(CGFloat)side;
-
-+ (UIColor *)alphaPatternImageColor;
-
 - (UIColor *)complementaryColor;
 
 

@@ -7,7 +7,6 @@
 //
 
 #import "UIColor+Tools.h"
-#import "UIImage+Tools.h"
 
 
 #define DEFAULT_VOID_COLOR					[UIColor blackColor]
@@ -78,7 +77,7 @@
 }
 
 - (NSString *)hexString {
-    float red, green, blue, alpha;
+    CGFloat red, green, blue, alpha;
     [self getRed:&red green:&green blue:&blue alpha:&alpha];
     red = ceil(red / 255);
     green = ceil(green / 255);
@@ -87,23 +86,8 @@
     return [NSString stringWithFormat:@"%02x%02x%02x", (unsigned int)red, (unsigned int)green, (unsigned int)blue];
 }
 
-+ (UIColor *)alphaPatternImageColorWithSguareSide:(CGFloat)side withColor1:(UIColor *)color1 andColor2:(UIColor *)color2 {
-	UIImage *patternImage = [UIImage alphaPatternImageWithSquareSide:side withColor1:color1 andColor2:color2];
-	return [UIColor colorWithPatternImage:patternImage];
-}
-
-+ (UIColor *)alphaPatternImageColorWithSguareSide:(CGFloat)side {
-	CGFloat c = 245;
-	return [self alphaPatternImageColorWithSguareSide:side withColor1:[UIColor colorWithRealRed:c green:c blue:c alpha:1] andColor2:[UIColor whiteColor]];
-}
-
-+ (UIColor *)alphaPatternImageColor {
-	return [self alphaPatternImageColorWithSguareSide:12];
-}
-
-
 - (UIColor *)complementaryColor {
-    float red, green, blue, alpha;
+    CGFloat red, green, blue, alpha;
     [self getRed:&red green:&green blue:&blue alpha:&alpha];
     
     red = red *255;

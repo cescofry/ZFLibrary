@@ -2,15 +2,15 @@
 Pod::Spec.new do |s|
 
   s.name         = "ZFLibrary"
-  s.version      = "0.0.1"
+  s.version      = "0.3.5"
   s.summary      = "Common Library Components and Categories"
 
   s.homepage     = "http://www.ziofritz.com"
 
-  s.license      = "MIT (example)"
+  s.license      = "BSD"
 
   s.author       = { "Francesco" => "cescofry@gmail.com" }
-  s.source       = { :git => "https://github.com/cescofry/ZFLibrary.git", :tag => 0.3 }
+  s.source       = { :git => "https://github.com/cescofry/ZFLibrary.git", :tag => '0.3.5' }
 
 
   s.requires_arc = true
@@ -18,11 +18,13 @@ Pod::Spec.new do |s|
   s.subspec 'Categories' do |sub|
     sub.platform = 'ios'
     sub.source_files = 'Categories/*.{h,m}'
+    s.license      = "BSD"
   end
   
   s.subspec 'CoreData' do |sub|
     sub.source_files = 'CoreData/*.{h,m}'
     sub.framework = 'CoreData'
+    s.license      = "BSD"
   end
 
 	### Keep for reference

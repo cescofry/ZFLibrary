@@ -128,7 +128,8 @@ static inline CGFloat toRadians (CGFloat degrees) { return degrees * M_PI/180.0f
 }
 
 + (UIImage *)alphaPatternImageWithSquareSide:(CGFloat)side withColor1:(UIColor *)color1 andColor2:(UIColor *)color2 {
-	side = (side * [UIScreen mainScreen].scale);
+    float screenScale = [UIScreen mainScreen].scale;
+	side = (side * screenScale);
 	CGFloat ds = (side * 2);
 	UIGraphicsBeginImageContextWithOptions(CGSizeMake(ds, ds), 1, screenScale);
 	
